@@ -137,6 +137,7 @@ if [ ! -n "$linenum" ]; then
 	sed -i "${line_array[${#line_array[*]} - 1]}isystemctl stop serial-getty@ttyAMA0.service" /etc/rc.local
 fi
 systemctl disable hciuart
+cp gateway-config /usr/bin/gateway-config
 
 echo "The system will reboot in 5 seconds..."
 sleep 5

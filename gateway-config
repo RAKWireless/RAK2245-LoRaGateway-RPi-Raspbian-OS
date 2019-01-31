@@ -1,0 +1,102 @@
+#!/bin/bash
+
+
+do_copy_global_conf() {
+	inrerface=""
+	option=$(whiptail --title "$1" --clear --menu "Select the GPS Interface:" 17 60 2 \
+   	1 "Rak2243" \
+    2 "Rak831" \
+    3>&1 1>&2 2>&3)
+	RET=$?
+    if [ $RET -eq 1 ]; then
+        echo "some error"
+    elif [ $RET -eq 0 ]; then
+        case "$option" in
+            1) inrerface="i2c";;
+            2) inrerface="serial";;
+        esac
+    fi
+
+	systemctl stop ttn-gateway
+	sleep 0.5
+	if [ $inrerface = "i2c" ]; then
+		cp /opt/ttn-gateway/packet_forwarder/lora_pkt_fwd/lora_pkt_fwd_i2c /opt/ttn-gateway/packet_forwarder/lora_pkt_fwd/lora_pkt_fwd
+	else
+		cp /opt/ttn-gateway/packet_forwarder/lora_pkt_fwd/lora_pkt_fwd_serial /opt/ttn-gateway/packet_forwarder/lora_pkt_fwd/lora_pkt_fwd
+	fi
+    cp /etc/lora_conf/$inrerface/global_conf.$1.json /opt/ttn-gateway/packet_forwarder/lora_pkt_fwd/global_conf.json
+    RET=$?
+    if [ $RET -eq 0 ]; then
+        whiptail --msgbox "Channel-plan configuration has been copied." 10 50 1
+    fi
+    systemctl restart ttn-gateway
+}
+
+do_restart_gateway_service() {
+    systemctl restart ttn-gateway.service
+    RET=$?
+    if [ $RET -eq 0 ]; then
+        whiptail --title "Restart gateway-service" --msgbox "The gateway-service has been restarted." 10 60 5
+        do_main_menu
+    fi
+
+}
+
+do_setup_channel_plan() {
+option=$(whiptail --title "Channel-plan configuration" --clear --menu "Select the channel-plan:" 17 60 9 \
+   	1 "AS_923" \
+    2 "AU_915_928" \
+    3 "CN_470_510" \
+    4 "EU_433" \
+    5 "EU_863_870" \
+    6 "IN_865_867" \
+    7 "KR_920_923" \
+    8 "RU_864_870" \
+    9 "US_902_928" \
+    3>&1 1>&2 2>&3)
+	RET=$?
+    if [ $RET -eq 1 ]; then
+        echo "some error"
+    elif [ $RET -eq 0 ]; then
+        case "$option" in
+            1) do_copy_global_conf "as_923";;
+            2) do_copy_global_conf "au_915_928";;
+			3) do_copy_global_conf "cn_470_510";;
+			4) do_copy_global_conf "eu_433";;
+            5) do_copy_global_conf "eu_863_870";;
+            6) do_copy_global_conf "in_865_867";;
+			7) do_copy_global_conf "kr_920_923";;
+			8) do_copy_global_conf "ru_864_870";;
+			9) do_copy_global_conf "us_902_928";;
+        esac
+    fi
+	do_main_menu
+}
+
+do_main_menu()
+{
+option=$(whiptail --title "LoRa Gateway OS" --cancel-button "Quit" --menu "Configuration options:" 17 60 9 \
+   	1 "Setup RAK831 LoRa concentrator" \
+   	2 "Restart gateway-servicer" \
+    3>&1 1>&2 2>&3)
+	RET=$?
+    if [ $RET -eq 1 ]; then
+        clear
+        return 0
+    elif [ $RET -eq 0 ]; then
+        case "$option" in
+            1) do_setup_channel_plan;;
+            2) do_restart_gateway_service;;
+        esac
+    fi
+}
+
+# Everything else needs to be run as root
+if [ $(id -u) -ne 0 ]; then
+  printf "Script must be run as root. Try 'sudo raspi-config'\n"
+  exit 1
+fi
+
+do_main_menu
+
+
