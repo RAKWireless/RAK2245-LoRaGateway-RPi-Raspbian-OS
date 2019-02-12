@@ -6,14 +6,17 @@ ttn_gateway based on the latest SX1301 driver [lora_gateway](https://github.com/
 
 step1 : Download and install [Raspbian Stretch LITE](https://www.raspberrypi.org/downloads/raspbian/) 
 
+step2 : Use command "sudo raspi-config", choose "Interfacing Options", enable spi and i2c interface
 
-step2 : Clone the installer and start the installation
+      $ sudo raspi-config
+
+step3 : Clone the installer and start the installation
 
       $ git clone https://github.com/RAKWireless/RAK2245-LoRaGateway-RPi-Raspbian-OS.git ~/RAK2243-LoRaGateway-RPi-Raspbian-OS
       $ cd ~/RAK2243-LoRaGateway-RPi-Raspbian-OS
       $ sudo ./install.sh
 
-step3 : Next you will see some messages as follow. Just hit the Enter key to keep default or enter your information if you want.
+step4 : Next you will see some messages as follow. Just hit the Enter key to keep default or enter your information if you want.
 
       Host name [rak-gateway]:
       Descriptive name [rak-rak831]:
