@@ -19,7 +19,6 @@ step3 : Clone the installer and start the installation
 step4 : Next you will see some messages as follow. Just hit the Enter key to keep default or enter your information if you want.
 
       Host name [rak-gateway]:
-      Descriptive name [rak-rak831]:
       Latitude [0]: 
       Longitude [0]: 
       Altitude [0]: 
