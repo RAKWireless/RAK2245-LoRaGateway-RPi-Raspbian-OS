@@ -12,8 +12,8 @@ step2 : Use command "sudo raspi-config", choose "Interfacing Options", enable sp
 
 step3 : Clone the installer and start the installation
 
-      $ git clone https://github.com/RAKWireless/RAK2245-LoRaGateway-RPi-Raspbian-OS.git ~/RAK2243-LoRaGateway-RPi-Raspbian-OS
-      $ cd ~/RAK2243-LoRaGateway-RPi-Raspbian-OS
+      $ git clone https://github.com/RAKWireless/RAK2245-LoRaGateway-RPi-Raspbian-OS.git ~/RAK2245-LoRaGateway-RPi-Raspbian-OS
+      $ cd ~/RAK2245-LoRaGateway-RPi-Raspbian-OS
       $ sudo ./install.sh
 
 step4 : Next you will see some messages as follow. Just hit the Enter key to keep default or enter your information if you want.
