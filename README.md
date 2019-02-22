@@ -15,8 +15,10 @@ step3 : Clone the installer and start the installation
       $ git clone https://github.com/RAKWireless/RAK2245-LoRaGateway-RPi-Raspbian-OS.git ~/RAK2245-LoRaGateway-RPi-Raspbian-OS
       $ cd ~/RAK2245-LoRaGateway-RPi-Raspbian-OS
       $ sudo ./install.sh
-
-step4 : Next you will see some messages as follow. Just hit the Enter key to keep default or enter your information if you want.
+      
+step4 : Config network selection for sim card, refers to /RAK2245-LoRaGateway-RPi-Raspbian-OS/rak_ppp/at.txt:
+      
+step5 : Next you will see some messages as follow. Just hit the Enter key to keep default or enter your information if you want.
 
       Host name [rak-gateway]:
       Latitude [0]: 
