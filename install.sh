@@ -68,7 +68,8 @@ fi
 
 # Check dependencies
 echo "Installing dependencies..."
-apt-get install git libi2c-dev -y
+apt-get install git libi2c-dev minicom -y
+./ppp-creator.sh HOLOGRAM ttyAMA0
 
 # Install LoRaWAN packet forwarder repositories
 INSTALL_DIR="/opt/ttn-gateway"
@@ -104,6 +105,7 @@ make
 
 popd
 
+cp $SCRIPT_DIR/rak_pppd . -rf
 
 LOCAL_CONFIG_FILE=$INSTALL_DIR/packet_forwarder/lora_pkt_fwd/local_conf.json
 
@@ -121,6 +123,13 @@ echo "Installation completed."
 #cp ./start.sh $INSTALL_DIR/bin/
 cp $SCRIPT_DIR/ttn-gateway.service /lib/systemd/system/
 systemctl enable ttn-gateway.service
+linenum=`sed -n '/wait_pi_hat_and_ppp/=' /etc/rc.local`
+if [ ! -n "$linenum" ]; then
+	set -a line_array
+	line_index=0
+	for linenum in `sed -n '/exit 0/=' /etc/rc.local`; do line_array[line_index]=$linenum; let line_index=line_index+1; done
+	sed -i "${line_array[${#line_array[*]} - 1]}i/opt/ttn-gateway/rak_pppd/wait_pi_hat_and_ppp.sh" /etc/rc.local
+fi
 
 # add config "dtoverlay=pi3-disable-bt" to config.txt
 linenum=`sed -n '/dtoverlay=pi3-disable-bt/=' /boot/config.txt`
@@ -140,6 +149,8 @@ fi
 systemctl disable hciuart
 cd $SCRIPT_DIR
 cp gateway-config /usr/bin/gateway-config
+cp config.txt /boot/config.txt
+cp dhcpcd.conf /etc/dhcpcd.conf
 
 echo "The system will reboot in 5 seconds..."
 sleep 5
