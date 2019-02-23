@@ -25,4 +25,6 @@ step5 : Next you will see some messages as follow. Just hit the Enter key to kee
       Longitude [0]: 
       Altitude [0]: 
     
-step4 : Now you have a running gateway after restart!
+step6 : Now you have a running gateway after restart!
+
+step7 : You can use the "gateway-config" command to configure other bands.This command only supports RAK2245 devices.
